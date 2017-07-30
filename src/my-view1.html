@@ -1,0 +1,89 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-app.html">
+
+<dom-module id="my-view1">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+ <firebase-auth 
+    id="auth"
+    app-name="fireroca"
+    user="{{user}}">
+    </firebase-auth>
+
+<firebase-query
+    id="query"
+    app-name="fireroca"
+    path="/users/[[user.uid]]/notes"
+    data="{{notes}}">
+</firebase-query>
+
+    <div class="card">
+      <div class="circle">1</div>
+      <h1>View One</h1>
+      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
+      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
+    </div>
+<div id="notes">
+  <template is="dom-repeat" items="[[notes]]" as="note">
+    
+<paper-card heading="[[note.titulo]]">
+<div>[[note.contenido]]</div>
+<paper-card>
+  </template>
+
+  <paper-input id="input1" type="" label="titulo"></paper-input>
+  <paper-input id="input2" type="" label="contenido"></paper-input>
+  <paper-button id="add" on-tap="add">añadir </paper-button>
+</div>
+
+  </template>
+
+  <script>
+    class MyView1 extends Polymer.Element {
+      static get is() { return 'my-view1'; }
+
+      static get properties() {
+        return {
+          
+          notes: {
+            type: Object
+          }
+        };
+      }
+add(){
+  this.$.query.ref.push({
+    titulo:this.$.input1.value,
+    contenido:this.$.input2.value
+  });
+  this.$.input1.value=null;
+  this.$.input2.value=null;
+}
+
+    }
+
+    window.customElements.define(MyView1.is, MyView1);
+  </script>
+</dom-module>
